@@ -14,11 +14,11 @@ module BranchUnit #(
 );
 
   logic Branch_Sel;
-  logic [31:0] PC_Full;
+  logic [31:0] PC_Full; 
 
-  assign PC_Full = {23'b0, Cur_PC};
+  assign PC_Full = {23'b0, Cur_PC}; 
 
-  assign PC_Imm = PC_Full + Imm;
+  assign PC_Imm = PC_Full + Imm; 
   assign PC_Four = PC_Full + 32'b100;
   assign Branch_Sel = Branch && AluResult[0];  // 0:Branch is taken; 1:Branch is not taken
 
