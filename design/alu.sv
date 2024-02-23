@@ -33,10 +33,10 @@ module alu#(
                     ALUResult = (SrcA < SrcB) ? 1 : 0;
             4'b1011:        // Greater than or equal
                     ALUResult = (SrcA >= SrcB) ? 1 : 0;
-            4'b1100:        // Shift right (SRLI)
-                    ALUResult = SrcA >> SrcB;
-            4'b1101:        // Shift left (SLLI)
+            4'b1100:        // Shift left (SLLI)
                     ALUResult = SrcA << SrcB;
+            4'b1101:        // Shift right (SRLI)
+                    ALUResult = SrcA >> SrcB;
             4'b1110:        //Slt e Slti
                     ALUResult = (SrcA < SrcB) ? 1 : 0;
             4'b1111:        //
