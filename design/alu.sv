@@ -5,11 +5,11 @@ module alu#(
         parameter OPCODE_LENGTH = 4
         )
         (
-        input logic [DATA_WIDTH-1:0]    SrcA,
-        input logic [DATA_WIDTH-1:0]    SrcB,
+                input logic [DATA_WIDTH-1:0]    SrcA,
+                input logic [DATA_WIDTH-1:0]    SrcB,
 
-        input logic [OPCODE_LENGTH-1:0]    Operation,
-        output logic[DATA_WIDTH-1:0] ALUResult
+                input logic [OPCODE_LENGTH-1:0]    Operation,
+                output logic[DATA_WIDTH-1:0] ALUResult
         );
     
         always_comb
@@ -19,8 +19,8 @@ module alu#(
                     ALUResult = SrcA & SrcB;
             4'b0001:        // OR
                     ALUResult = SrcA | SrcB;
-            4'b0010:        // ADD
-                    ALUResult = SrcA + SrcB; //ADDI?
+            4'b0010:        // ADD e ADDI
+                    ALUResult = SrcA + SrcB; 
             4'b0011:        // SUB
                     ALUResult = SrcA - SrcB;
             4'b0100:        // XOR
