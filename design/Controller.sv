@@ -18,10 +18,11 @@ module Controller (
     output logic [1:0] ALUop,  //00: LW/SW; 01:Branch; 10: Rtype
     output logic Branch,  //0: branch is not taken; 1: branch is taken
     output logic jump, //0: jump is not taken; 1: jump is taken
-    output logic jumpreg //0: jump register is not taken; 1: jump register is taken
+    output logic jumpreg, //0: jump register is not taken; 1: jump register is taken
+    output logic Halt //0: halt is not taken; 1: halt is taken
 );
 
-  logic [6:0] R_TYPE, I_TYPE, LW, SW, BR, JAL, JALR;
+  logic [6:0] R_TYPE, I_TYPE, LW, SW, BR, JAL, JALR, HALT;
 
   assign R_TYPE = 7'b0110011;  //add,and
   assign I_TYPE = 7'b0010011;  //immediate aritmetico
@@ -30,7 +31,9 @@ module Controller (
   assign BR = 7'b1100011;  //branchs condicionais
   assign JAL = 7'b1101111;  //jump
   assign JALR = 7'b1100111;  //jump register
+  assign HALT= 7'b1111111;  //halt
 
+  
   assign ALUSrc = (Opcode == LW || Opcode == SW || Opcode == I_TYPE || Opcode == JALR);
   assign MemtoReg = (Opcode == LW);
   assign RegWrite = (Opcode == R_TYPE || Opcode == I_TYPE ||Opcode == LW || Opcode == JAL || Opcode == JALR);
@@ -41,5 +44,6 @@ module Controller (
   assign Branch = (Opcode == BR);
   assign jump = (Opcode == JAL) || (Opcode == JALR);
   assign jumpreg = (Opcode == JALR);
+  assign Halt = (Opcode == HALT);
 
 endmodule

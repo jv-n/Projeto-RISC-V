@@ -20,6 +20,7 @@ module Datapath #(
     MemRead,  // Memroy Reading Enable
     Branch,  // Branch Enable
     jumpreg,  // Jump Register Enable
+    Halt,  // Halt
     input  logic [          1:0] ALUOp,
     input  logic [ALU_CC_W -1:0] ALU_CC,         // ALU Control Code ( input of the ALU )
     output logic [          6:0] opcode,
@@ -145,6 +146,7 @@ module Datapath #(
       B.MemWrite <= 0;
       B.ALUOp <= 0;
       B.Branch <= 0;
+      B.Halt <= 0;
       B.jumpreg <= 0; //adicionei flush no reg B pra os jumps
       B.Curr_Pc <= 0;
       B.RD_One <= 0;
@@ -156,7 +158,10 @@ module Datapath #(
       B.func3 <= 0;
       B.func7 <= 0;
       B.Curr_Instr <= A.Curr_Instr;  //debug tmp
-    end else begin
+    end 
+
+      
+    else begin
       B.ALUSrc <= ALUsrc;
       B.jump <= jump;
       B.MemtoReg <= MemtoReg;
@@ -166,6 +171,7 @@ module Datapath #(
       B.ALUOp <= ALUOp;
       B.Branch <= Branch;
       B.jumpreg <= jumpreg;
+      B.Halt <= Halt;
       B.Curr_Pc <= A.Curr_Pc;
       B.RD_One <= Reg1;
       B.RD_Two <= Reg2;
@@ -230,6 +236,7 @@ module Datapath #(
       B.Branch,
       B.jump,
       B.jumpreg,
+      B.Halt,
       ALUResult,
       BrImm,
       Old_PC_Four,
@@ -254,7 +261,9 @@ module Datapath #(
       C.rd <= 0;
       C.func3 <= 0;
       C.func7 <= 0;
-    end else begin
+    end 
+        
+    else begin
       C.RegWrite <= B.RegWrite;
       C.jump <= B.jump;
       C.MemtoReg <= B.MemtoReg;
@@ -302,22 +311,8 @@ module Datapath #(
       D.Alu_Result <= 0;
       D.MemReadData <= 0;
       D.rd <= 0;
-    end /*else if(mem_wb_reg.halt) //halt  
-      begin
-        D.RegWrite <= 0;
-        D.MemtoReg <= 0;
-        D.jump <= 0;
-        D.Pc_Imm <= 0;
-        D.Pc_Four <= 0;
-        D.Imm_Out <= 0;
-        D.Alu_Result <= 0;
-        D.MemReadData <= 0;
-        D.rd <= 0;
-        D.Curr_Instr <= 0; // Zera a instrução atual
-        PC <= 0; // Zera o PC
-      end
+    end 
       
-    */
     else begin
       D.RegWrite <= C.RegWrite;
       D.jump <= C.jump;
