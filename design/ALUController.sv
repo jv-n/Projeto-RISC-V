@@ -43,7 +43,9 @@ module ALUController (
       ((ALUOp == 2'b10) && (Funct3 == 3'b000) && (Funct7 != 7'b0100000))|| //ADDI
    //   ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)) || // R\I->>>
       ((ALUOp == 2'b10) && (Funct3 == 3'b000) && (Funct7 == 7'b0100000)) || // R\I-sub
-      ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)); //SRAI
+      ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)) || //SRAI
+      ((ALUOp == 2'b10) && (Funct3 == 3'b010) && (Funct7 == 7'b0000000)) || //slt  
+      ((ALUOp == 2'b10) && (Funct3 == 3'b010) && (Funct7 != 7'b0000000));// SLTI // R\I-<
 
   assign Operation[2] =  ((ALUOp==2'b10) && (Funct3==3'b101) && (Funct7==7'b0000000)) || // R\I->>
       //((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)) ||  // R\I->>>

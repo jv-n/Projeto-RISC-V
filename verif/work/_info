@@ -11,7 +11,7 @@ cModel Technology
 Z0 dC:/Users/jvnas/OneDrive/Documentos/Smaller-RISC-V-Pipeline-master/verif
 vadder
 Z1 DXx6 sv_std 3 std 0 22 VYECXdT12H8WgbUP_5Y6:3
-Z2 !s110 1708818167
+Z2 !s110 1708820915
 !i10b 1
 !s100 J@Bf42a<9Q9R;nJSZl2>B2
 Z3 !s11b Dg1SIo80bB@j0V0VzS_@n1
@@ -28,7 +28,7 @@ Z7 OV;L;2020.1;71
 r1
 !s85 0
 31
-Z8 !s108 1708818167.000000
+Z8 !s108 1708820915.000000
 !s107 ./tb_top.sv|./../design/RISC_V.sv|./../design/Datapath.sv|./../design/instructionmemory.sv|./../design/datamemory.sv|./../design/mux4.sv|./../design/mux2.sv|./../design/imm_Gen.sv|./../design/HazardDetection.sv|./../design/ForwardingUnit.sv|./../design/flopr.sv|./../design/Controller.sv|./../design/BranchUnit.sv|./../design/ALUController.sv|./../design/alu.sv|./../design/RegFile.sv|./../design/RegPack.sv|./../design/Memoria32Data.sv|./../design/Memoria32.sv|./../design/ramOnChipData.v|./../design/ramOnChip32.v|./../design/adder.sv|
 Z9 !s90 -reportprogress|300|-f|compile_verilog|
 !i113 1
@@ -37,13 +37,13 @@ valu
 R1
 R2
 !i10b 1
-!s100 iR==flcAjT]go5>JedC_42
+!s100 hTD4mM;hVCGHXL5^AIc]G2
 R3
-IAKhV01BW2kb3e=Y55j7991
+I<lgXcj@4EI66TffCh?z9B0
 R4
 S1
 R0
-w1708816924
+w1708820907
 8./../design/alu.sv
 F./../design/alu.sv
 !i122 0
@@ -61,17 +61,17 @@ vALUController
 R1
 R2
 !i10b 1
-!s100 VbRX_gfm;AMdj=D^_CL081
+!s100 bOQ:>1cD9D]2]6:67YdmQ1
 R3
-IFk^QD]@LkC>MP>QabV`WF0
+Ig5OehH:[;z=447@oo]6lV1
 R4
 S1
 R0
-w1708817006
+w1708819983
 8./../design/ALUController.sv
 F./../design/ALUController.sv
 !i122 0
-L0 20 49
+L0 20 51
 R7
 r1
 !s85 0
@@ -117,7 +117,7 @@ I6zFEiz<iBAj0f4z_i0Pf12
 R4
 S1
 R0
-w1708817168
+w1708820477
 8./../design/Controller.sv
 F./../design/Controller.sv
 !i122 0
