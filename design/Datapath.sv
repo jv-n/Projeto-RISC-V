@@ -18,6 +18,8 @@ module Datapath #(
     MemWrite,  // Register file or Immediate MUX // Memroy Writing Enable
     MemRead,  // Memroy Reading Enable
     Branch,  // Branch Enable
+    jump,  // Jump Enable
+    jumpreg,  // Jump Register Enable
     input  logic [          1:0] ALUOp,
     input  logic [ALU_CC_W -1:0] ALU_CC,         // ALU Control Code ( input of the ALU )
     output logic [          6:0] opcode,
@@ -141,6 +143,8 @@ module Datapath #(
       B.MemWrite <= 0;
       B.ALUOp <= 0;
       B.Branch <= 0;
+      B.jump <= 0;
+      B.jumpreg <= 0; //adicionei flush no reg B pra os jumps
       B.Curr_Pc <= 0;
       B.RD_One <= 0;
       B.RD_Two <= 0;
@@ -159,6 +163,8 @@ module Datapath #(
       B.MemWrite <= MemWrite;
       B.ALUOp <= ALUOp;
       B.Branch <= Branch;
+      B.jump <= jump;
+      B.jumpreg <= jumpreg;
       B.Curr_Pc <= A.Curr_Pc;
       B.RD_One <= Reg1;
       B.RD_Two <= Reg2;
@@ -221,6 +227,8 @@ module Datapath #(
       B.Curr_Pc,
       B.ImmG,
       B.Branch,
+      B.jump,
+      B.jumpreg,
       ALUResult,
       BrImm,
       Old_PC_Four,
@@ -244,6 +252,7 @@ module Datapath #(
       C.rd <= 0;
       C.func3 <= 0;
       C.func7 <= 0;
+      C.jump <= 0;
     end else begin
       C.RegWrite <= B.RegWrite;
       C.MemtoReg <= B.MemtoReg;
@@ -257,6 +266,7 @@ module Datapath #(
       C.rd <= B.rd;
       C.func3 <= B.func3;
       C.func7 <= B.func7;
+      C.jump <= B.jump;
       C.Curr_Instr <= B.Curr_Instr;  // debug tmp
     end
   end
@@ -284,6 +294,7 @@ module Datapath #(
         begin
       D.RegWrite <= 0;
       D.MemtoReg <= 0;
+      D.jump <= 0;
       D.Pc_Imm <= 0;
       D.Pc_Four <= 0;
       D.Imm_Out <= 0;
@@ -293,6 +304,7 @@ module Datapath #(
     end else begin
       D.RegWrite <= C.RegWrite;
       D.MemtoReg <= C.MemtoReg;
+      D.jump <= C.jump;
       D.Pc_Imm <= C.Pc_Imm;
       D.Pc_Four <= C.Pc_Four;
       D.Imm_Out <= C.Imm_Out;
@@ -310,7 +322,14 @@ module Datapath #(
       D.MemtoReg,
       WrmuxSrc
   );
-
+  
+  mux2 #(32) jalmux  (
+    temp,
+    D.Pc_Four,
+    D.jump,
+    WrmuxSrc
+  );
+  
   assign WB_Data = WrmuxSrc;
 
 endmodule

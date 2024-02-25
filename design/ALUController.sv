@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 // 0000 - AND
-// 0001 - OR
+// 0001 - OR JALR
 // 0010 - ADD/ADDI
 // 0011 - SUB 
 // 0100 - XOR 
@@ -34,7 +34,8 @@ module ALUController (
     //   ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)) ||// R\I->>>
       ((ALUOp == 2'b10) && (Funct3 == 3'b000) && (Funct7 == 7'b0100000)) || // R\I-sub
       ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0000000)) ||//SRLI
-      ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)); //SRAI
+      ((ALUOp == 2'b10) && (Funct3 == 3'b101) && (Funct7 == 7'b0100000)) || //SRAI
+      ((ALUOp == 2'b11) && (Funct3 == 3'b000)); //JALR
 
   assign Operation[1] = (ALUOp == 2'b00) ||  // Load/store
       ((ALUOp == 2'b01) && (Funct3 == 3'b100)) ||  // BLT
