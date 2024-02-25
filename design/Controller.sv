@@ -23,8 +23,8 @@ module Controller (
 
   assign R_TYPE = 7'b0110011;  //add,and
   assign I_TYPE = 7'b0010011;  //immediate aritmetico
-  assign LW = 7'b0000011;  //lw
-  assign SW = 7'b0100011;  //sw
+  assign LW = 7'b0000011;  //load
+  assign SW = 7'b0100011;  //store
   assign BR = 7'b1100011;  //branchs condicionais
 
   assign ALUSrc = (Opcode == LW || Opcode == SW || Opcode == I_TYPE);
