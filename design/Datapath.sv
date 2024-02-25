@@ -13,12 +13,12 @@ module Datapath #(
     input  logic                 clk,
     reset,
     RegWrite,
+    jump, // Jump Enable
     MemtoReg,  // Register file writing enable   // Memory or ALU MUX
     ALUsrc,
     MemWrite,  // Register file or Immediate MUX // Memroy Writing Enable
     MemRead,  // Memroy Reading Enable
     Branch,  // Branch Enable
-    jump,  // Jump Enable
     jumpreg,  // Jump Register Enable
     input  logic [          1:0] ALUOp,
     input  logic [ALU_CC_W -1:0] ALU_CC,         // ALU Control Code ( input of the ALU )
@@ -47,6 +47,7 @@ module Datapath #(
   logic [DATA_W-1:0] SrcB, ALUResult;
   logic [DATA_W-1:0] ExtImm, BrImm, Old_PC_Four, BrPC;
   logic [DATA_W-1:0] WrmuxSrc;
+  logic [DATA_W-1:0] temp;
   logic PcSel;  // mux select / flush signal
   logic [1:0] FAmuxSel;
   logic [1:0] FBmuxSel;
@@ -137,13 +138,13 @@ module Datapath #(
     if ((reset) || (Reg_Stall) || (PcSel))   // initialization or flush or generate a NOP if hazard
         begin
       B.ALUSrc <= 0;
+      B.jump <= 0;
       B.MemtoReg <= 0;
       B.RegWrite <= 0;
       B.MemRead <= 0;
       B.MemWrite <= 0;
       B.ALUOp <= 0;
       B.Branch <= 0;
-      B.jump <= 0;
       B.jumpreg <= 0; //adicionei flush no reg B pra os jumps
       B.Curr_Pc <= 0;
       B.RD_One <= 0;
@@ -157,13 +158,13 @@ module Datapath #(
       B.Curr_Instr <= A.Curr_Instr;  //debug tmp
     end else begin
       B.ALUSrc <= ALUsrc;
+      B.jump <= jump;
       B.MemtoReg <= MemtoReg;
       B.RegWrite <= RegWrite;
       B.MemRead <= MemRead;
       B.MemWrite <= MemWrite;
       B.ALUOp <= ALUOp;
       B.Branch <= Branch;
-      B.jump <= jump;
       B.jumpreg <= jumpreg;
       B.Curr_Pc <= A.Curr_Pc;
       B.RD_One <= Reg1;
@@ -241,6 +242,7 @@ module Datapath #(
     if (reset)   // initialization
         begin
       C.RegWrite <= 0;
+      C.jump <= 0;
       C.MemtoReg <= 0;
       C.MemRead <= 0;
       C.MemWrite <= 0;
@@ -252,9 +254,9 @@ module Datapath #(
       C.rd <= 0;
       C.func3 <= 0;
       C.func7 <= 0;
-      C.jump <= 0;
     end else begin
       C.RegWrite <= B.RegWrite;
+      C.jump <= B.jump;
       C.MemtoReg <= B.MemtoReg;
       C.MemRead <= B.MemRead;
       C.MemWrite <= B.MemWrite;
@@ -266,7 +268,6 @@ module Datapath #(
       C.rd <= B.rd;
       C.func3 <= B.func3;
       C.func7 <= B.func7;
-      C.jump <= B.jump;
       C.Curr_Instr <= B.Curr_Instr;  // debug tmp
     end
   end
@@ -293,18 +294,34 @@ module Datapath #(
     if (reset)   // initialization
         begin
       D.RegWrite <= 0;
-      D.MemtoReg <= 0;
       D.jump <= 0;
+      D.MemtoReg <= 0;
       D.Pc_Imm <= 0;
       D.Pc_Four <= 0;
       D.Imm_Out <= 0;
       D.Alu_Result <= 0;
       D.MemReadData <= 0;
       D.rd <= 0;
-    end else begin
+    end /*else if(mem_wb_reg.halt) //halt  
+      begin
+        D.RegWrite <= 0;
+        D.MemtoReg <= 0;
+        D.jump <= 0;
+        D.Pc_Imm <= 0;
+        D.Pc_Four <= 0;
+        D.Imm_Out <= 0;
+        D.Alu_Result <= 0;
+        D.MemReadData <= 0;
+        D.rd <= 0;
+        D.Curr_Instr <= 0; // Zera a instrução atual
+        PC <= 0; // Zera o PC
+      end
+      
+    */
+    else begin
       D.RegWrite <= C.RegWrite;
-      D.MemtoReg <= C.MemtoReg;
       D.jump <= C.jump;
+      D.MemtoReg <= C.MemtoReg;
       D.Pc_Imm <= C.Pc_Imm;
       D.Pc_Four <= C.Pc_Four;
       D.Imm_Out <= C.Imm_Out;
@@ -320,10 +337,10 @@ module Datapath #(
       D.Alu_Result,
       D.MemReadData,
       D.MemtoReg,
-      WrmuxSrc
+      temp
   );
-  
-  mux2 #(32) jalmux  (
+   
+  mux2 #(32) jalmux (
     temp,
     D.Pc_Four,
     D.jump,

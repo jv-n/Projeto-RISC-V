@@ -15,11 +15,10 @@ module Controller (
     output logic RegWrite, //The register on the Write register input is written with the value on the Write data input 
     output logic MemRead,  //Data memory contents designated by the address input are put on the Read data output
     output logic MemWrite, //Data memory contents designated by the address input are replaced by the value on the Write data input.
-    output logic [1:0] ALUOp,  //00: LW/SW; 01:Branch; 10: Rtype
-    output logic Branch  //0: branch is not taken; 1: branch is taken
-    output logic jump //0: jump is not taken; 1: jump is taken
+    output logic [1:0] ALUop,  //00: LW/SW; 01:Branch; 10: Rtype
+    output logic Branch,  //0: branch is not taken; 1: branch is taken
+    output logic jump, //0: jump is not taken; 1: jump is taken
     output logic jumpreg //0: jump register is not taken; 1: jump register is taken
-       
 );
 
   logic [6:0] R_TYPE, I_TYPE, LW, SW, BR, JAL, JALR;
@@ -37,10 +36,10 @@ module Controller (
   assign RegWrite = (Opcode == R_TYPE || Opcode == I_TYPE ||Opcode == LW || Opcode == JAL || Opcode == JALR);
   assign MemRead = (Opcode == LW);
   assign MemWrite = (Opcode == SW);
-  assign ALUOp[0] = (Opcode == BR || Opcode == JALR);
-  assign ALUOp[1] = (Opcode == R_TYPE || Opcode == I_TYPE || Opcode == JALR);
+  assign ALUop[0] = (Opcode == BR || Opcode == JALR);
+  assign ALUop[1] = (Opcode == R_TYPE || Opcode == I_TYPE || Opcode == JALR);
   assign Branch = (Opcode == BR);
-  assign jump = (Opcode == JAL || Opcode == JALR);
+  assign jump = (Opcode == JAL) || (Opcode == JALR);
   assign jumpreg = (Opcode == JALR);
 
 endmodule
